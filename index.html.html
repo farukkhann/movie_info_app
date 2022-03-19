@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #poster{
+            width: 500px;
+            height: 700px;
+        }
+        #container{
+            display: flex;
+        }
+        #input{
+            height: 50px;
+            width: 100px;
+            background-color: red;
+            border: transparent;
+        }
+        #movie{
+            height: 50px;
+            width: 500px;
+            border: solid 1px red;
+            border-radius: 5px;
+            margin-left: 600px;
+        }
+
+    </style>
+</head>
+<body>
+    <input type="text" name="" id="movie">
+    <button id="input" onclick="thismovie()">Search </button>
+    <br>
+    <br>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    async  function thismovie(){
+        try{
+            var movie=document.getElementById('movie').value;
+        var result=await fetch(`http://www.omdbapi.com/?t=${movie}&apikey=c15e3843`)
+        let data= await result.json()
+        console.log(data);
+        showmovie(data);
+        }catch(err){
+            console.log(err+"erorr not found")
+            showError();
+    
+        }
+    }
+    function showError(){
+        var photo=document.createElement("img")
+        photo.src='https://media.giphy.com/media/Ll22OhMLAlVDb8UQWe/giphy.gif'
+        var div=document.getElementById('container')
+        div.append(photo)
+    }
+
+
+
+    function showmovie(movie){
+       
+        var maindiv=document.createElement('div')
+
+        var photo=document.createElement("img")
+        photo.src=movie.Poster
+        photo.id="poster"
+
+        var title=document.createElement("h2")
+        title.innerText=movie.Title
+
+        var year=document.createElement("p")
+        year.innerText="Release year: "+movie.Year
+
+        var director=document.createElement("h5")
+        director.innerText="Director :"+movie.Director
+
+        var actors=document.createElement("p")
+        actors.innerText="Actors :"+movie.Actors
+
+        var genre=document.createElement("p")
+        genre.innerText="Genre : "+movie.Genre
+
+        var rating=document.createElement('p')
+        rating.innerText=movie.imdbRating
+        if(rating.innerText>8.5){
+           var recommend= document.createElement("button")
+           recommend.innerText="recommended"
+           maindiv.append(photo,title,year,director,actors,genre,rating,recommend);
+           var div1=document.getElementById("container")
+        div1.id="container"
+        div1.append(maindiv)
+        }
+
+        else{
+            maindiv.append(photo,title,year,director,actors,genre,rating);
+        var div1=document.getElementById("container")
+        div1.id="container"
+        div1.append(maindiv)
+
+        }
+    }
+
+
+ 
+</script>
